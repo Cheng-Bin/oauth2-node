@@ -36,8 +36,30 @@ exports.verifyAppRedirectUri = function(clientId, url, callback) {
 
 
 
-//======================================================
+//----------------------- authorizationCode --------------------------
+var dataAuthorizationCode = {};
 
+/**
+ * 生成授权token
+ * 
+ * @param {any} userId
+ * @param {any} clientId
+ * @param {any} redirectUri
+ * @param {any} callback
+ */
+exports.generateAuthorizationCode = function(userId, clientId, redirectUri, callback) {
+    var code = utils.randomString(20);
+    dataAuthorizationCode[code] = {
+        clientId: clientId,
+        userId: userId
+    };
+    callback(null, code);
+};
+
+
+
+
+//------------------------ accesstoken --------------------------------
 
 var dataAccessToken = [];
 /**

@@ -1,5 +1,26 @@
+
+
 var clone = require('clone');
+var parseURL = require('url').parse;
+var formatUrl = require('url').format;
 var utils = module.exports = exports = clone(require('lei-utils'));
+
+
+
+/**
+ * 将参数添加到url
+ * 
+ * @param {any} url
+ * @param {any} params
+ */
+utils.addQueryParamsToUrl = function(url, params) {
+    var info = parseURL(url, true);
+    for (var i in params) {
+        info.query[i] = params[i];
+    }
+    delete info.search;
+    return formatUrl(info);
+};
 
 
 /**
@@ -45,4 +66,24 @@ utils.invalidParameterError = function(name) {
  */
 utils.redirectUriNotMatchError = function(url) {
     return utils.createApiError('REDIRECT_URI_NOT_MATCH', '回调地址不正确：' + url);
+};
+
+
+/**
+ * 生成随机字符串
+ * 
+ * @param {any} size
+ * @param {any} chars
+ */
+utils.randomString = function(size, chars) {
+    size = size || 6;
+    chars = chars || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const max = chars.length;
+    let ret = '';
+
+    for (i = 0; i < size; i++) {
+        ret += chars.charAt(Math.floor(Math.random() * max));
+    }
+
+    return ret;
 };

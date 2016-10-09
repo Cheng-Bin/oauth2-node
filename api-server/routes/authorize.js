@@ -2,6 +2,8 @@
 var utils = require('../lib/utils');
 var database = require('../lib/database');
 
+
+
 /**
  * 检查参数
  * 
@@ -68,6 +70,7 @@ exports.confirmApp = function(req, res, next) {
             req.query.redirect_uri,
             function(err, ret) {
                 if (err) return next(err);
+                console.log(ret);
                 res.redirect(utils.addQueryParamsToUrl(req.query.redirect_uri, {
                     code: ret
                 }));

@@ -4,7 +4,7 @@ var authorize = require('./authorize');
 var router = express.Router();
 
 router.get('/authorize', middlewares.ensureLogin, authorize.checkAuthorizeParams, authorize.showAppInfo);
-router.post('/authorize', middlewares.ensureLogin, middlewares.checkAuthorizeParams, authorize.confirmApp);
+router.post('/authorize', middlewares.ensureLogin, authorize.checkAuthorizeParams, authorize.confirmApp);
 
 // router.post('/access_token', );
 
