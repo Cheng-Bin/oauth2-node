@@ -76,3 +76,41 @@ exports.confirmApp = function(req, res, next) {
                 }));
             });
 };
+
+
+/**
+ * 获取access_token
+ * 
+ * @param {any} req
+ * @param {any} res
+ * @param {any} next
+ */
+exports.getAccessToken = function(req, res, next) {
+
+    var client_id = req.body.client_id || req.query.client_id;
+    var client_secret = req.body.client_secret || req.query.client_secret;
+    var redirect_uri = req.body.redirect_uri || req.query.redirect_uri;
+    var code = req.body.code || req.query.code;
+
+    if (!client_id) return next(utils.missingParameterError('client_id'));
+    if (!client_secret) return next(utils.missingParameterError('client_secret'));
+    if (!redirect_uri) return next(utils.missingParameterError('redirect_uri'));
+    if (!code) return next(utils.missingParameterError('code'));
+
+    database.verifyAuthorizationCode(code, client_id, client_secret, redirect_uri, function(err, userId) {
+        if (err) return next(err);
+
+        database.generateAccessToken(userId, client_id, function(err, accessToken) {
+            if (err) return next(err);
+            database.deleteAuthorizationCode(code, function(err) {
+                if (err) console.error(err);
+            });
+
+            res.apiSuccess({
+                access_token: accessToken,
+                expires_in: 3600 * 24
+            });
+        });
+    });
+
+};

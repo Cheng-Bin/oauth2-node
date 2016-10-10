@@ -57,11 +57,67 @@ exports.generateAuthorizationCode = function(userId, clientId, redirectUri, call
 };
 
 
+/**
+ * 验证授权码是否正确
+ * 
+ * @param {any} code
+ * @param {any} clientId
+ * @param {any} clientSecret
+ * @param {any} redirectUri
+ * @param {any} callback
+ */
+exports.verifyAuthorizationCode = function(code, clientId, clientSecret, redirectUri, callback) {
+    var info = dataAuthorizationCode[code];
+    if (!info) return callback(utils.invalidParameterError('code'));
+    if (info.clientId !== clientId) return callback(utils.invalidParameterError('code'));
+
+    database.getAppInfo(clientId, function(err, appInfo) {
+        if (err) return callback(err);
+        if (appInfo.secret != clientSecret) return callback(utils.invalidParameterError('client_secret'));
+        if (appInfo.redirectUri != redirectUri) return callback(utils.invalidParameterError('redirect_uri'));
+
+        callback(null, info.userId);
+    });
+};
+
+
+/**
+ * 删除授权code
+ * 
+ * @param {any} code
+ * @param {any} callback
+ */
+exports.deleteAuthorizationCode = function(code, callback) {
+    delete dataAuthorizationCode[code];
+    callback(null, code);
+};
+
+
 
 
 //------------------------ accesstoken --------------------------------
 
 var dataAccessToken = [];
+
+
+
+/**
+ * 生成access_token
+ * 
+ * @param {any} userId
+ * @param {any} clientId
+ * @param {any} callback
+ */
+exports.generateAccessToken = function(userId, clientId, callback) {
+    var code = utils.randomString(20);
+    dataAccessToken[code] = {
+        clientId: clientId,
+        userId: userId
+    };
+    callback(null, code);
+};
+
+
 /**
  * 获取accesstoken信息
  * 
