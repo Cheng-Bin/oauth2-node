@@ -23,7 +23,6 @@ exports.checkAuthorizeParams = function(req, res, next) {
         if (err) return next(err);
 
         req.appInfo = ret;
-
         database.verifyAppRedirectUri(
             req.query.client_id, 
             req.query.redirect_uri, 

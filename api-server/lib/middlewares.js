@@ -4,7 +4,16 @@ var parseUrl = require('url').parse;
 var js2xmlparser = require('js2xmlparser');
 var database = require('./database');
 var utils = require('./utils');
+var connect = require('connect');
+var bodyParser = require('body-parser');
+var multipart = require('connect-multiparty');
 
+
+var postBody = connect();
+postBody.use(bodyParser.json());
+postBody.use(bodyParser.urlencoded({extended: true}));
+postBody.use(multipart());
+exports.postBody = postBody;
 
 /**
  * 检查用户是否已经登录

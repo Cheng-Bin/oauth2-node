@@ -1,6 +1,6 @@
 
 var utils = require('./utils');
-
+var database = module.exports;
 
 /**
  *  获取应用信息
@@ -14,7 +14,7 @@ exports.getAppInfo = function(id, callback) {
         name: 'chapin',
         description: ' 专注前端20年',
         secret: '1qaz2wsx',
-        redirectUri: 'http://127.0.0.1:8080/example/auth/callback'
+        redirectUri: 'http://127.0.0.1:3001/app/auth/callback'
     });
 };
 

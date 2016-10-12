@@ -27,7 +27,6 @@ app.use(middlewares.extendApiOutput);
 // routes
 app.use('/api', middlewares.verifyAccessToken);
 app.use('/OAuth2', oauth2);
-app.use('/example', example);
 
 // error handlers
 // api出错信息
