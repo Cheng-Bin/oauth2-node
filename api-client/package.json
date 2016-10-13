@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Cheng-Bin/oauth2-node#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "request": "^2.75.0"
   }
 }

@@ -3,10 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-
-var oauth2 = require('./routes/oauth2');
-
 var middlewares = require('./lib/middlewares');
+var oauth2 = require('./routes/oauth2');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -25,11 +24,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(middlewares.extendApiOutput);
 
 // routes
-app.use('/api', middlewares.verifyAccessToken);
+app.use('/api', middlewares.verifyAccessToken, api);
 app.use('/OAuth2', oauth2);
 
 // error handlers
 // api出错信息
 app.use(middlewares.apiErrorHandle);
+
 
 module.exports = app;

@@ -130,3 +130,33 @@ exports.getAccessTokenInfo = function(token, callback) {
     if (!info) return callback(utils.invalidParameterError('token'));
     callback(null, info);
 };
+
+
+//--------------------------articles-----------------------------------
+var faker = require('faker');
+faker.local = 'zh-CN';
+
+var dataArticles = [];
+var ARTICLES_NUM = 100;
+
+for (var i = 0; i< ARTICLES_NUM; i++) {
+    dataArticles.push({
+        id:faker.random.uuid(),
+        author: faker.name.findName(),
+        title: faker.lorem.sentence(),
+        createAt: faker.date.past(),
+        content: faker.lorem.paragraphs(10)
+    });
+}
+
+/**
+ * 生成文章列表
+ * 
+ * @param {any} query
+ * @param {any} callback
+ */
+exports.queryArticles = function(query, callback) {
+    query.$skip = utils.defaultNumber(query.$skip, 0);
+    query.$limit = utils.defaultNumber($query.limit, 10);
+    callback(null, dataArticles.slice(query.$skip, query.$skip + query.$limit));
+};
