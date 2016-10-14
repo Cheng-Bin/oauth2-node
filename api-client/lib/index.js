@@ -119,7 +119,7 @@ APIClient.prototype.requestAccessToken = function(code, callback) {
         client_secret: this._appSecret,
         redirect_uri: this._callbackUrl
     }, function(err, ret) {
-        if (ret) me._accessToken = ret._accessToken;
+        if (ret) me._accessToken = ret.access_token;
         callback(err, ret);
     });
 };

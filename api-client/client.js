@@ -30,8 +30,7 @@ exports.requestAuth = function(req, res, next) {
 exports.authCallback = function(req, res, next) {
     client.requestAccessToken(req.query.code, function(err, ret) {
         if (err) return res.send(err.toString());
-        console.log('result:' + ret);
-        res.redirect('http://localhost:3001/app');
+        res.redirect('/app');
     });
 };
 
@@ -47,11 +46,11 @@ exports.app = function(req, res, next) {
     if (!client._accessToken) return res.redirect('/app/auth');
 
     client.getArticles(req.query, function(err, ret) {
-        console.log('app.....');
         if (err) return res.send(err.toString());
+        console.log(ret);
         res.send({
             accessToken: client._accessToken,
-            result: JSON.parse(ret)
+            result: ret
         });
     });
 }
